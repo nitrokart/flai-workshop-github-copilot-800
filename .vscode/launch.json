@@ -2,6 +2,21 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Python: Django (Runserver)",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/octofit-tracker/backend/manage.py",
+      "args": ["runserver", "0.0.0.0:8000"],
+      "django": true,
+      "cwd": "${workspaceFolder}/octofit-tracker/backend",
+      "console": "integratedTerminal"
+    }
+  ]
+}
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
       "name": "Launch Django Backend",
       "type": "python",
       "request": "launch",

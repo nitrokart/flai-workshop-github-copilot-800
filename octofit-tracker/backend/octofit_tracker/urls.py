@@ -18,26 +18,50 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import (
-    api_root,
     UserViewSet,
     TeamViewSet,
     ActivityViewSet,
     LeaderboardViewSet,
     WorkoutViewSet,
 )
+from rest_framework.decorators import api_view
+from rest_framework.reverse import reverse
+from rest_framework.response import Response
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet, basename='user')
 router.register(r'teams', TeamViewSet, basename='team')
 router.register(r'activities', ActivityViewSet, basename='activity')
 router.register(r'leaderboard', LeaderboardViewSet, basename='leaderboard')
+
 router.register(r'workouts', WorkoutViewSet, basename='workout')
 
-codespace_name = os.environ.get('CODESPACE_NAME')
-if codespace_name:
-    base_url = f"https://{codespace_name}-8000.app.github.dev"
-else:
-    base_url = "http://localhost:8000"
+
+@api_view(['GET'])
+def api_root(request, format=None):
+    """DRF API root that returns absolute Codespace-based URLs when available.
+
+    Builds URLs using the environment variable `CODESPACE_NAME` so clients
+    (or the frontend) can call the Codespaces-hosted endpoint directly:
+    https://$CODESPACE_NAME-8000.app.github.dev/api/[component]/
+    Falls back to request-derived host when `CODESPACE_NAME` is not set.
+    """
+    codespace = os.environ.get('CODESPACE_NAME')
+    if codespace:
+        base = f"https://{codespace}-8000.app.github.dev"
+    else:
+        scheme = 'https' if request.is_secure() else 'http'
+        base = f"{scheme}://{request.get_host()}"
+
+    return Response({
+        'users': base + reverse('user-list'),
+        'teams': base + reverse('team-list'),
+        'activities': base + reverse('activity-list'),
+        'leaderboard': base + reverse('leaderboard-list'),
+        'workouts': base + reverse('workout-list'),
+        'base_url': base,
+    })
+
 
 urlpatterns = [
     path('', api_root, name='api-root'),
