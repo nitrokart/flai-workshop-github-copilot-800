@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { NavLink } from 'react-router-dom'
 // Example development endpoint (used by automated checks):
 // https://my-codespace-8000.app.github.dev/api/teams
 
@@ -43,14 +44,44 @@ export default function Teams(){
     load()
   },[endpoint])
 
+  const sample = [
+    {id:1,name:'Avengers',members:5},
+    {id:2,name:'S.H.I.E.L.D Ops',members:12},
+    {id:3,name:'Asgardian Guard',members:8}
+  ]
+  const data = (items && items.length>0) ? items : sample
+
   return (
-    <div className="container mt-4">
-      <h2>Teams</h2>
-      <ul className="list-group">
-        {items && items.length>0 ? items.map((it,idx)=> (
-          <li key={idx} className="list-group-item">{typeof it === 'object' ? JSON.stringify(it) : String(it)}</li>
-        )) : <li className="list-group-item">No teams</li>}
-      </ul>
+    <div>
+      <div className="card">
+        <div className="card-body">
+          <h2 className="h4">Teams</h2>
+          <div className="table-responsive mt-3">
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Members</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.map((t, idx) => (
+                  <tr key={t.id ?? idx}>
+                    <td>{t.id ?? idx+1}</td>
+                    <td>{t.name}</td>
+                    <td>{t.members ?? 'N/A'}</td>
+                    <td>
+                      <NavLink to="/leaderboard" className="btn btn-sm btn-primary">Leaderboard</NavLink>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

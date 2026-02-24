@@ -26,6 +26,7 @@ class TeamSerializer(serializers.ModelSerializer):
 
 class ActivitySerializer(serializers.ModelSerializer):
     id = serializers.SerializerMethodField()
+    username = serializers.SerializerMethodField()
 
     class Meta:
         model = Activity
@@ -34,9 +35,16 @@ class ActivitySerializer(serializers.ModelSerializer):
     def get_id(self, obj):
         return str(obj.id)
 
+    def get_username(self, obj):
+        try:
+            return obj.user.username if obj.user else ''
+        except Exception:
+            return ''
+
 
 class LeaderboardSerializer(serializers.ModelSerializer):
     id = serializers.SerializerMethodField()
+    username = serializers.SerializerMethodField()
 
     class Meta:
         model = Leaderboard
@@ -44,6 +52,12 @@ class LeaderboardSerializer(serializers.ModelSerializer):
 
     def get_id(self, obj):
         return str(obj.id)
+
+    def get_username(self, obj):
+        try:
+            return obj.user.username if obj.user else ''
+        except Exception:
+            return ''
 
 
 class WorkoutSerializer(serializers.ModelSerializer):

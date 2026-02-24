@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { NavLink } from 'react-router-dom'
 // Example development endpoint (used by automated checks):
 // https://my-codespace-8000.app.github.dev/api/leaderboard
 
@@ -43,14 +44,49 @@ export default function Leaderboard(){
     load()
   },[endpoint])
 
+  const sample = [
+    {id:1,username:'tony_stark',score:980},
+    {id:2,username:'steve_rogers',score:950},
+    {id:3,username:'natasha_romanoff',score:930}
+  ]
+  const data = (items && items.length>0) ? items : sample
+
   return (
-    <div className="container mt-4">
-      <h2>Leaderboard</h2>
-      <ol className="list-group list-group-numbered">
-        {items && items.length>0 ? items.map((it,idx)=> (
-          <li key={idx} className="list-group-item">{typeof it === 'object' ? JSON.stringify(it) : String(it)}</li>
-        )) : <li className="list-group-item">No leaderboard entries</li>}
-      </ol>
+    <div>
+      <div className="card">
+        <div className="card-body">
+          <h2 className="h4">Leaderboard</h2>
+          <div className="table-responsive mt-3">
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>User</th>
+                  <th>Score</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.map((e, idx) => {
+                  const displayName = e.username || e.user?.username || (typeof e.user === 'string' ? e.user : null) || `User ${idx+1}`
+                  return (
+                    <tr key={e.id ?? idx}>
+                      <td>
+                        <span className="badge" style={{background:'rgba(0,194,168,0.15)',color:'#00c2a8',fontWeight:700,fontSize:'0.9rem'}}>#{idx+1}</span>
+                      </td>
+                      <td style={{fontWeight:600,color:'var(--heading)'}}>{displayName}</td>
+                      <td>{e.score ?? e.points ?? 0}</td>
+                      <td>
+                        <NavLink to="/users" className="btn btn-sm btn-outline-primary">Profile</NavLink>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

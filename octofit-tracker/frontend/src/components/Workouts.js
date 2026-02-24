@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { NavLink } from 'react-router-dom'
 // Example development endpoint (used by automated checks):
 // https://my-codespace-8000.app.github.dev/api/workouts
 
@@ -43,14 +44,53 @@ export default function Workouts(){
     load()
   },[endpoint])
 
+  const sample = [
+    {id:1,name:'Iron Man Cardio',description:'High-intensity arc reactor powered cardio session',duration:30},
+    {id:2,name:'Super Soldier Strength',description:'Captain America serum-enhanced strength training',duration:60},
+    {id:3,name:'Black Widow Flex',description:'Agility and flexibility routine from the Red Room',duration:45},
+    {id:4,name:'Hulk Smash',description:'Explosive power training to channel your inner Hulk',duration:40},
+    {id:5,name:'Asgardian Warrior',description:'Full-body Asgardian warrior conditioning',duration:50},
+    {id:6,name:'Man of Steel Endurance',description:'Solar-powered endurance and stamina training',duration:90}
+  ]
+
+  const data = (items && items.length>0) ? items : sample
+
   return (
-    <div className="container mt-4">
-      <h2>Workouts</h2>
-      <ul className="list-group">
-        {items && items.length>0 ? items.map((it,idx)=> (
-          <li key={idx} className="list-group-item">{typeof it === 'object' ? JSON.stringify(it) : String(it)}</li>
-        )) : <li className="list-group-item">No workouts</li>}
-      </ul>
+    <div>
+      <div className="card">
+        <div className="card-body">
+          <h2 className="h4">Workouts</h2>
+          <div className="table-responsive mt-3">
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Duration</th>
+                  <th>Description</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.map((w, idx) => (
+                  <tr key={w.id ?? idx}>
+                    <td>{w.id ?? idx+1}</td>
+                    <td>{w.name}</td>
+                    <td>{w.duration} min</td>
+                    <td>{w.description ?? '-'}</td>
+                    <td>
+                      <div className="btn-group" role="group">
+                        <NavLink to="/activities" className="btn btn-sm btn-primary">Log Activity</NavLink>
+                        <NavLink to="/leaderboard" className="btn btn-sm btn-outline-secondary">Leaderboard</NavLink>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

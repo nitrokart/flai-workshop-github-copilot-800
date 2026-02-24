@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { NavLink } from 'react-router-dom'
 // Example development endpoint (used by automated checks):
 // https://my-codespace-8000.app.github.dev/api/activities
 
@@ -43,14 +44,51 @@ export default function Activities(){
     load()
   },[endpoint])
 
+  const sample = [
+    {id:1,username:'tony_stark',activity_type:'cardio',duration:30,date:'2026-02-24'},
+    {id:2,username:'steve_rogers',activity_type:'strength',duration:50,date:'2026-02-23'},
+    {id:3,username:'natasha_romanoff',activity_type:'flexibility',duration:45,date:'2026-02-22'}
+  ]
+  const data = (items && items.length>0) ? items : sample
+
   return (
-    <div className="container mt-4">
-      <h2>Activities</h2>
-      <ul className="list-group">
-        {items && items.length>0 ? items.map((it,idx)=> (
-          <li key={idx} className="list-group-item">{typeof it === 'object' ? JSON.stringify(it) : String(it)}</li>
-        )) : <li className="list-group-item">No activities</li>}
-      </ul>
+    <div>
+      <div className="card">
+        <div className="card-body">
+          <h2 className="h4">Activities</h2>
+          <div className="table-responsive mt-3">
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>User</th>
+                  <th>Type</th>
+                  <th>Duration</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.map((a, idx) => {
+                  const displayUser = a.username || a.user?.username || (typeof a.user === 'string' ? a.user : null) || `User ${idx+1}`
+                  return (
+                    <tr key={a.id ?? idx}>
+                      <td>{a.id ?? idx+1}</td>
+                      <td style={{fontWeight:600,color:'var(--heading)'}}>{displayUser}</td>
+                      <td>{a.activity_type ?? a.type ?? '-'}</td>
+                      <td>{a.duration} min</td>
+                      <td>{a.date ?? '-'}</td>
+                      <td>
+                        <NavLink to="/users" className="btn btn-sm btn-outline-primary">Profile</NavLink>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

@@ -1,0 +1,178 @@
+/* ======================================================
+   OctoFit Tracker — Dark Theme Bootstrap Overrides
+   ====================================================== */
+
+:root {
+  --bg-start:    #0f172a;
+  --bg-end:      #0b2a3a;
+  --panel:       rgba(255,255,255,0.05);
+  --accent:      #00c2a8;
+  --accent-dark: #009f8a;
+  --muted:       #9fb3c8;
+  --heading:     #e6f7f3;
+  --btn-text:    #042027;
+  --border:      rgba(255,255,255,0.07);
+}
+
+/* ── Base ─────────────────────────────────────────── */
+body {
+  margin: 0;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: linear-gradient(160deg, var(--bg-start), var(--bg-end)) fixed;
+  color: var(--muted);
+  min-height: 100vh;
+}
+
+/* ── Navbar ───────────────────────────────────────── */
+.octofit-nav.navbar-dark.bg-dark {
+  background: #0d1b2a !important;
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+}
+
+.app-logo {
+  width: 36px;
+  height: 36px;
+}
+
+.brand-text {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--heading);
+}
+
+.octofit-nav .navbar-brand {
+  text-decoration: none;
+}
+
+.octofit-nav .nav-link {
+  color: var(--muted) !important;
+  border-radius: 6px;
+  padding: 6px 12px !important;
+  transition: color 0.15s, background 0.15s;
+}
+
+.octofit-nav .nav-link:hover,
+.octofit-nav .nav-link.active {
+  color: var(--accent) !important;
+  background: rgba(0,194,168,0.08);
+}
+
+/* ── Hero card on Home ───────────────────────────── */
+.octofit-hero.card {
+  background: linear-gradient(135deg, rgba(0,194,168,0.10), rgba(0,70,90,0.25));
+  border: 1px solid rgba(0,194,168,0.22);
+  border-radius: 14px;
+  color: var(--heading);
+}
+.octofit-hero .lead {
+  color: var(--muted);
+}
+
+/* ── Bootstrap Card dark override ────────────────── */
+.card {
+  background: var(--panel) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  color: var(--muted);
+  box-shadow: 0 6px 22px rgba(2,6,23,0.5);
+}
+
+/* ── Headings ─────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  color: var(--heading);
+}
+
+/* ── Bootstrap Table dark override ──────────────── */
+.table {
+  color: var(--muted) !important;
+  border-color: var(--border) !important;
+  margin-bottom: 0;
+}
+
+.table thead th {
+  background: rgba(255,255,255,0.04) !important;
+  color: var(--heading) !important;
+  font-weight: 600;
+  border-color: var(--border) !important;
+  border-bottom: 2px solid rgba(0,194,168,0.28) !important;
+  white-space: nowrap;
+}
+
+.table tbody tr {
+  border-color: var(--border) !important;
+}
+
+.table tbody tr:hover > td {
+  background: rgba(255,255,255,0.03) !important;
+  color: var(--heading) !important;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+  --bs-table-accent-bg: rgba(255,255,255,0.02);
+  color: var(--muted);
+}
+
+.table td {
+  vertical-align: middle;
+  border-color: var(--border) !important;
+  color: var(--muted) !important;
+}
+
+/* ── Bootstrap Buttons ───────────────────────────── */
+.btn-primary {
+  background-color: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: var(--btn-text) !important;
+  font-weight: 600;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--accent-dark) !important;
+  border-color: var(--accent-dark) !important;
+}
+
+.btn-outline-primary {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+  background: transparent !important;
+}
+.btn-outline-primary:hover {
+  background-color: rgba(0,194,168,0.15) !important;
+  color: var(--heading) !important;
+}
+
+.btn-outline-secondary {
+  border-color: var(--border) !important;
+  color: var(--muted) !important;
+  background: transparent !important;
+}
+.btn-outline-secondary:hover {
+  background-color: rgba(255,255,255,0.06) !important;
+  color: var(--heading) !important;
+}
+
+.btn-outline-light {
+  border-color: rgba(255,255,255,0.3) !important;
+  color: var(--heading) !important;
+  background: transparent !important;
+}
+.btn-outline-light:hover {
+  background-color: rgba(255,255,255,0.08) !important;
+}
+
+/* ── Links ───────────────────────────────────────── */
+a:not(.nav-link):not(.navbar-brand):not(.btn) {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:not(.nav-link):not(.navbar-brand):not(.btn):hover {
+  color: var(--accent-dark);
+  text-decoration: underline;
+}
+
+/* ── Scrollbar (cosmetic) ────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
