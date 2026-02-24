@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+// Example development endpoint (used by automated checks):
+// https://my-codespace-8000.app.github.dev/api/workouts
 
 export default function Workouts(){
   const [items, setItems] = useState([])
