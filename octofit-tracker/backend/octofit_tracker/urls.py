@@ -46,12 +46,15 @@ def api_root(request, format=None):
     https://$CODESPACE_NAME-8000.app.github.dev/api/[component]/
     Falls back to request-derived host when `CODESPACE_NAME` is not set.
     """
-    codespace = os.environ.get('CODESPACE_NAME')
+    codespace = os.environ.get('CODESPACE_NAME') or os.environ.get('REACT_APP_CODESPACE_NAME')
     if codespace:
         base = f"https://{codespace}-8000.app.github.dev"
     else:
         scheme = 'https' if request.is_secure() else 'http'
         base = f"{scheme}://{request.get_host()}"
+
+    # log which base URL we're returning (visible in runserver console)
+    print(f"API root building absolute URLs using base: {base}")
 
     return Response({
         'users': base + reverse('user-list'),

@@ -30,6 +30,13 @@ CODESPACE_NAME = os.environ.get('CODESPACE_NAME')
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 if CODESPACE_NAME:
     ALLOWED_HOSTS.append(f"{CODESPACE_NAME}-8000.app.github.dev")
+# also accept Codespace name provided via frontend env var if present
+REACT_CODESPACE = os.environ.get('REACT_APP_CODESPACE_NAME')
+if REACT_CODESPACE and REACT_CODESPACE != CODESPACE_NAME:
+    ALLOWED_HOSTS.append(f"{REACT_CODESPACE}-8000.app.github.dev")
+# In development allow Codespaces app.github.dev subdomains so hosted frontend can reach backend
+if DEBUG:
+    ALLOWED_HOSTS.append('.app.github.dev')
 
 
 # Application definition
@@ -62,6 +69,28 @@ MIDDLEWARE = [
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_ALL_HEADERS = True
 CORS_ALLOW_METHODS = ['DELETE', 'GET', 'OPTIONS', 'PATCH', 'POST', 'PUT']
+
+# When running behind Codespaces HTTPS proxy, ensure Django knows the original scheme
+# so responses (and redirects) are generated as https and CORS/host checks work.
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Prefer explicit allowed origins when a Codespace name is available to ensure
+# the Access-Control-Allow-Origin header is sent for Codespaces-hosted frontend.
+codespace_frontend = None
+if CODESPACE_NAME:
+    codespace_frontend = f"https://{CODESPACE_NAME}-3000.app.github.dev"
+elif REACT_CODESPACE:
+    codespace_frontend = f"https://{REACT_CODESPACE}-3000.app.github.dev"
+
+if codespace_frontend:
+    CORS_ALLOW_ALL_ORIGINS = False
+    CORS_ALLOWED_ORIGINS = [codespace_frontend]
+    CSRF_TRUSTED_ORIGINS = [codespace_frontend]
+    CORS_ALLOW_CREDENTIALS = True
+else:
+    # fallback: allow all origins in local development
+    CORS_ALLOW_ALL_ORIGINS = True
+    CORS_ALLOWED_ORIGINS = []
 
 ROOT_URLCONF = 'octofit_tracker.urls'
 
